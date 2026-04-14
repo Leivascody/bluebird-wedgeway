@@ -1,0 +1,4 @@
+# Bluebird Wedgeway investor page - Reg D Rule 506(b) private placement
+# This material is not intended for public distribution or search engine indexing.
+User-agent: *
+Disallow: /

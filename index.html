@@ -5,10 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>4061 Wedgeway Court | Earth City Industrial | Bluebird Commercial Real Estate</title>
 <meta name="description" content="A multi-tenant industrial value-add acquisition in Earth City, MO — 43,426 SF, 100% leased to four tenants. Investor opportunity from Bluebird Commercial Real Estate." />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+<meta name="googlebot" content="noindex, nofollow" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  // Gate-first: add .gated class before paint if not already authorized this session.
+  // Prevents flash of content behind the gate.
+  (function(){
+    try{
+      if (sessionStorage.getItem('bb_wedgeway_access') !== 'granted') {
+        document.documentElement.classList.add('gated');
+      }
+    } catch(e){
+      document.documentElement.classList.add('gated');
+    }
+  })();
+</script>
 <style>
   :root{
     --navy:#0D1B2B;
@@ -491,6 +506,114 @@
   }
   .disclaimer{margin-top:24px;font-size:12px;color:rgba(255,255,255,.45);max-width:920px;line-height:1.65}
 
+  /* ---------------- ACCESS GATE ---------------- */
+  html.gated,html.gated body{overflow:hidden;height:100%}
+  .access-gate{
+    position:fixed;inset:0;z-index:9999;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(199,145,107,.14), transparent 55%),
+      radial-gradient(ellipse at 90% 100%, rgba(26,43,64,.8), transparent 60%),
+      #0D1B2B;
+    display:grid;place-items:center;padding:28px;
+    font-family:var(--sans);
+  }
+  .access-gate::before{
+    content:"";position:absolute;inset:0;
+    background:url("https://cdn.jsdelivr.net/gh/Leivascody/bluebird-wedgeway@main/images/noise.svg");
+    opacity:.04;pointer-events:none;
+  }
+  .gate-card{
+    position:relative;z-index:2;
+    width:100%;max-width:520px;
+    background:rgba(18,34,54,.92);
+    border:1px solid rgba(199,145,107,.28);
+    border-radius:var(--radius-lg);
+    padding:42px 44px 36px;
+    color:#fff;
+    box-shadow:0 40px 120px rgba(0,0,0,.55);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .gate-card img.logo{height:38px;width:auto;margin-bottom:22px}
+  .gate-eyebrow{
+    color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;margin-bottom:14px;display:block;
+  }
+  .gate-card h2{
+    font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.2;
+    color:#fff;margin:0 0 12px;letter-spacing:-.01em;
+  }
+  .gate-card .lede{
+    font-size:14px;line-height:1.65;color:rgba(255,255,255,.8);margin:0 0 22px;
+  }
+  .gate-field{display:block;margin-bottom:16px}
+  .gate-field label{
+    display:block;font-size:11px;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:8px;
+  }
+  .gate-field input[type="text"]{
+    width:100%;box-sizing:border-box;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.16);
+    color:#fff;font-family:inherit;font-size:15px;
+    padding:14px 16px;border-radius:10px;letter-spacing:.04em;
+    transition:border-color .2s, background .2s;
+  }
+  .gate-field input[type="text"]:focus{
+    outline:none;border-color:var(--gold);
+    background:rgba(255,255,255,.07);
+  }
+  .gate-check{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:14px 16px;margin-bottom:12px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:10px;cursor:pointer;
+    transition:background .2s, border-color .2s;
+  }
+  .gate-check:hover{background:rgba(255,255,255,.05);border-color:rgba(199,145,107,.3)}
+  .gate-check input{
+    appearance:none;-webkit-appearance:none;
+    width:18px;height:18px;flex-shrink:0;margin-top:1px;
+    border:1.5px solid rgba(255,255,255,.35);
+    border-radius:4px;background:transparent;
+    cursor:pointer;position:relative;
+    transition:all .2s;
+  }
+  .gate-check input:checked{background:var(--gold);border-color:var(--gold)}
+  .gate-check input:checked::after{
+    content:"";position:absolute;left:4px;top:0px;
+    width:5px;height:10px;border:solid var(--navy);
+    border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .gate-check span{font-size:13px;line-height:1.5;color:rgba(255,255,255,.85)}
+  .gate-check span b{color:#fff;font-weight:600}
+  .gate-submit{
+    width:100%;margin-top:18px;
+    background:var(--gold);color:var(--navy);
+    font-weight:700;font-size:14px;letter-spacing:.02em;
+    padding:16px;border-radius:10px;cursor:pointer;
+    transition:transform .15s, box-shadow .2s, background .2s, opacity .2s;
+  }
+  .gate-submit:hover:not(:disabled){background:#d29e75;transform:translateY(-1px);box-shadow:0 10px 26px rgba(199,145,107,.35)}
+  .gate-submit:disabled{opacity:.45;cursor:not-allowed}
+  .gate-error{
+    display:none;color:#F7B5A2;font-size:13px;margin-top:10px;
+    background:rgba(176,90,60,.12);border:1px solid rgba(176,90,60,.3);
+    padding:10px 14px;border-radius:8px;
+  }
+  .gate-error.show{display:block}
+  .gate-foot{
+    margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);
+    font-size:11.5px;line-height:1.6;color:rgba(255,255,255,.52);
+  }
+  .gate-foot a{color:var(--gold);border-bottom:1px dotted rgba(199,145,107,.4)}
+  .gate-foot a:hover{color:#d29e75}
+  @media (max-width:540px){
+    .gate-card{padding:32px 26px 28px}
+    .gate-card h2{font-size:22px}
+  }
+
   /* ---------------- 506(b) PRIVATE PLACEMENT BANNER ---------------- */
   .private-banner{
     background:linear-gradient(90deg, #1A2B40 0%, #0D1B2B 100%);
@@ -693,6 +816,44 @@
 </style>
 </head>
 <body>
+
+<!-- ============== ACCESS GATE (506(b) click-through) ============== -->
+<div class="access-gate" id="accessGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate-card">
+    <img class="logo" src="images/bluebird-logo.png" alt="Bluebird Commercial Real Estate" />
+    <span class="gate-eyebrow">Confidential &middot; Rule 506(b) Private Placement</span>
+    <h2 id="gateTitle">Investor access required</h2>
+    <p class="lede">This investment material is confidential and provided only to pre-existing accredited investors who have received a direct invitation from Bluebird. Please enter your invitation code and confirm the statements below to continue.</p>
+
+    <form id="gateForm" novalidate>
+      <div class="gate-field">
+        <label for="gateCode">Invitation Code</label>
+        <input type="text" id="gateCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter code from your invitation email" />
+      </div>
+
+      <label class="gate-check">
+        <input type="checkbox" id="gateCheck1" />
+        <span>I have a <b>pre-existing, substantive relationship</b> with Bluebird Commercial Real Estate or its principals and was directly invited to review this material.</span>
+      </label>
+      <label class="gate-check">
+        <input type="checkbox" id="gateCheck2" />
+        <span>I am an <b>accredited investor</b> as defined under Rule 501(a) of Regulation D (individual income &gt; $200K / joint &gt; $300K in each of the last two years, or net worth &gt; $1M excluding primary residence, or qualifying entity/professional status).</span>
+      </label>
+      <label class="gate-check">
+        <input type="checkbox" id="gateCheck3" />
+        <span>I understand this material is <b>confidential</b>, figures shown are <b>estimates</b> and not guarantees, and I will not forward, distribute, or post it publicly.</span>
+      </label>
+
+      <div class="gate-error" id="gateError">The invitation code you entered is not recognized. Please check the code provided in your invitation email, or contact Bluebird to request access.</div>
+
+      <button type="submit" class="gate-submit" id="gateSubmit" disabled>Enter Investor Page</button>
+    </form>
+
+    <div class="gate-foot">
+      Don't have an invitation? Contact <a href="mailto:cleivas@bluebirdcre.co?subject=Wedgeway%20Investor%20Access%20Request">cleivas@bluebirdcre.co</a> or call (949) 290-9150. Access is limited to pre-existing accredited investor relationships.
+    </div>
+  </div>
+</div>
 
 <!-- ============== 506(b) PRIVATE PLACEMENT BANNER ============== -->
 <div class="private-banner" role="note" aria-label="Private placement notice">
@@ -1496,6 +1657,71 @@
 </div>
 
 <script>
+/* -------- 506(b) ACCESS GATE --------
+ * Invitation code: client-side gate + pre-existing relationship / accredited / confidentiality click-through.
+ * This is a first layer — it deters casual viewing, blocks search engines, and creates a self-cert record.
+ * Update WEDGEWAY_CODES below to rotate or add new invitation codes.
+ * NOTE: Client-side gating is not a substitute for true 506(b) compliance
+ * (pre-existing relationships are built off-platform). Consult securities counsel.
+ */
+(function gateInit(){
+  const WEDGEWAY_CODES = [
+    'WEDGEWAY-2026',   // default code for initial distribution — rotate as needed
+    'BLUEBIRD-IR-2026' // backup code
+  ];
+  const STORAGE_KEY = 'bb_wedgeway_access';
+  const gate = document.getElementById('accessGate');
+  const form = document.getElementById('gateForm');
+  const code = document.getElementById('gateCode');
+  const c1 = document.getElementById('gateCheck1');
+  const c2 = document.getElementById('gateCheck2');
+  const c3 = document.getElementById('gateCheck3');
+  const err = document.getElementById('gateError');
+  const submit = document.getElementById('gateSubmit');
+
+  // Already authorized this session?
+  try {
+    if (sessionStorage.getItem(STORAGE_KEY) === 'granted') {
+      dismissGate();
+      return;
+    }
+  } catch(e) {}
+
+  function refreshSubmit(){
+    const ok = code.value.trim().length > 0 && c1.checked && c2.checked && c3.checked;
+    submit.disabled = !ok;
+  }
+  function dismissGate(){
+    document.documentElement.classList.remove('gated');
+    if (gate) gate.style.display = 'none';
+  }
+  [code, c1, c2, c3].forEach(el => {
+    el.addEventListener('input', refreshSubmit);
+    el.addEventListener('change', refreshSubmit);
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const entered = code.value.trim().toUpperCase().replace(/\s+/g,'');
+    const match = WEDGEWAY_CODES.some(c => c.toUpperCase() === entered);
+    if (!match) {
+      err.classList.add('show');
+      code.focus();
+      return;
+    }
+    err.classList.remove('show');
+    try {
+      sessionStorage.setItem(STORAGE_KEY, 'granted');
+      sessionStorage.setItem(STORAGE_KEY + '_at', new Date().toISOString());
+      sessionStorage.setItem(STORAGE_KEY + '_code', entered);
+    } catch(e) {}
+    dismissGate();
+  });
+
+  // Focus the code input on load
+  if (code) setTimeout(() => code.focus(), 100);
+})();
+
 /* -------- Nav scroll shadow -------- */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
