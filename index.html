@@ -278,6 +278,73 @@
     color:var(--gold);line-height:1;letter-spacing:-.02em;
   }
 
+  /* ---------------- INVESTOR CALCULATOR ---------------- */
+  .calc-card{
+    background:#fff;border:1px solid var(--line-dark);
+    border-radius:var(--radius-lg);padding:40px;box-shadow:var(--shadow-soft);
+  }
+  .amount-picker{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px;
+  }
+  .amount-btn{
+    appearance:none;cursor:pointer;font-family:inherit;
+    padding:22px 10px;border-radius:var(--radius);
+    border:1.5px solid var(--line-dark);background:#fff;color:var(--ink);
+    font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:-.01em;
+    transition:all .18s ease;
+  }
+  .amount-btn .sub{
+    display:block;font-family:var(--sans);font-size:11px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .amount-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .amount-btn.active{
+    background:var(--navy);color:#fff;border-color:var(--navy);
+  }
+  .amount-btn.active .sub{color:rgba(199,145,107,.95)}
+  .calc-results{
+    display:grid;grid-template-columns:1.35fr 1fr;gap:32px;
+  }
+  .calc-flows{
+    background:var(--bone);border:1px solid var(--line-dark);
+    border-radius:var(--radius);padding:28px;
+  }
+  .calc-flows h3{font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;font-weight:600;font-family:var(--sans)}
+  .calc-flows table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  .calc-flows th,.calc-flows td{
+    padding:12px 4px;text-align:right;font-size:14px;border-bottom:1px solid var(--line-dark);
+  }
+  .calc-flows th:first-child,.calc-flows td:first-child{text-align:left;color:var(--ink-soft);font-weight:500}
+  .calc-flows thead th{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+    font-weight:600;border-bottom:1.5px solid var(--ink);
+  }
+  .calc-flows tbody td{color:var(--ink)}
+  .calc-flows tr.total td{
+    border-top:2px solid var(--ink);border-bottom:0;padding-top:16px;
+    font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);
+  }
+  .calc-flows tr.total td:last-child{color:var(--gold)}
+  .calc-kpis{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:start}
+  .kpi-tile{
+    background:var(--navy);color:#fff;padding:24px;border-radius:var(--radius);
+    border:1px solid var(--navy-2);
+  }
+  .kpi-tile .lbl{
+    font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(255,255,255,.65);margin-bottom:10px;
+  }
+  .kpi-tile .val{
+    font-family:var(--serif);font-size:30px;font-weight:600;color:var(--gold);
+    line-height:1;letter-spacing:-.02em;
+  }
+  .kpi-tile.wide{grid-column:1/-1}
+  .kpi-tile.wide .val{font-size:26px}
+  .calc-note{
+    margin-top:22px;font-size:12.5px;color:var(--ink-soft);line-height:1.6;
+  }
+
   /* ---------------- CAPITAL STRUCTURE ---------------- */
   .stack-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
   .panel{
@@ -434,6 +501,8 @@
     .split{grid-template-columns:1fr;gap:48px}
     .hero-stats{grid-template-columns:repeat(2,1fr);gap:28px}
     .returns-grid{grid-template-columns:repeat(2,1fr)}
+    .calc-results{grid-template-columns:1fr}
+    .amount-picker{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:740px){
     .nav-links,.nav-cta .login{display:none}
@@ -495,7 +564,7 @@
           Earth City, MO &nbsp;·&nbsp; Multi-Tenant Industrial
         </div>
         <h1>4061 Wedgeway Court<span class="accent">Earth City Industrial</span></h1>
-        <p class="lead">A 43,426 SF, 100% leased multi-tenant industrial value-add acquisition in St. Louis County's premier infill logistics submarket — anchored by four credit tenants on staggered leases, with low in-place rents and durable NOI growth.</p>
+        <p class="lead">A 43,426 SF, 100% leased multi-tenant industrial value-add acquisition in St. Louis County's premier infill logistics submarket — anchored by four established tenants on staggered leases, with low in-place rents and durable NOI growth.</p>
         <div class="hero-ctas">
           <a href="#contact" class="btn-rounded">Request Investor Package <span aria-hidden="true">→</span></a>
           <a href="#financials" class="btn-link">View Financials <span aria-hidden="true">→</span></a>
@@ -512,7 +581,7 @@
             <div class="hero-stat-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-7M14 7h7v7"/></svg></div>
             <div>
               <div class="hero-stat-num">14.2%</div>
-              <div class="hero-stat-label">Projected IRR</div>
+              <div class="hero-stat-label">Projected LP IRR</div>
             </div>
           </div>
           <div class="hero-stat">
@@ -525,7 +594,7 @@
           <div class="hero-stat">
             <div class="hero-stat-icon"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
             <div>
-              <div class="hero-stat-num">2.1x</div>
+              <div class="hero-stat-num">3.32x</div>
               <div class="hero-stat-label">Equity Multiple</div>
             </div>
           </div>
@@ -541,7 +610,7 @@
     <div class="section-head">
       <span class="section-eyebrow">Executive Summary</span>
       <h2>An institutional-quality industrial asset acquired below replacement cost.</h2>
-      <p>Bluebird Commercial Real Estate is acquiring 4061 Wedgeway Court — a 43,426 SF multi-tenant industrial property in Earth City, Missouri — at a basis well below replacement cost. The asset is 100% leased to four established tenants with staggered expirations, providing durable cash flow with built-in mark-to-market upside as in-place rents reset toward market over the hold.</p>
+      <p>Bluebird Commercial Real Estate is acquiring 4061 Wedgeway Court (Suites 4061–4073) — a 43,426 SF multi-tenant industrial property in Earth City, Missouri — for a $3.6M purchase price ($82.90 PSF), meaningfully below replacement cost. The asset is 100% leased to four established tenants with staggered expirations, providing durable cash flow with built-in mark-to-market upside as in-place rents reset toward market over the 10-year hold.</p>
     </div>
   </div>
 </section>
@@ -592,7 +661,7 @@
         <h2>4061 Wedgeway Court</h2>
         <p style="color:rgba(255,255,255,.78);font-size:16px;margin-top:18px">A functional, multi-tenant industrial building in one of St. Louis's strongest infill logistics nodes — with surface parking, fenced yard storage, and dock-high loading optimized for last-mile distribution and light manufacturing tenants.</p>
         <table class="detail-table">
-          <tr><td>Address</td><td>4061 Wedgeway Court, Earth City, MO 63045</td></tr>
+          <tr><td>Address</td><td>4061–4073 Wedgeway Court, Earth City, MO 63045</td></tr>
           <tr><td>Submarket</td><td>Earth City / Westport</td></tr>
           <tr><td>Asset Type</td><td>Multi-Tenant Industrial</td></tr>
           <tr><td>Total Building Area</td><td>43,426 SF</td></tr>
@@ -617,8 +686,8 @@
   <div class="container">
     <div class="section-head">
       <span class="section-eyebrow">Tenant Summary</span>
-      <h2>Four credit tenants. Staggered expirations.</h2>
-      <p>The rent roll is intentionally diversified — no tenant exceeds 35% of total income, and lease expirations are spread across the hold to mitigate rollover risk.</p>
+      <h2>Four established tenants. Staggered expirations.</h2>
+      <p>The rent roll is intentionally diversified — Agiliti Health, the largest tenant, accounts for just 39% of the building and is locked in through February 2030. Lease expirations are spread across the hold to mitigate rollover risk.</p>
     </div>
     <div style="overflow-x:auto">
       <table class="data-table">
@@ -632,25 +701,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Tenant A — Logistics</td><td>15,200</td><td>35.0%</td><td>$6.85</td><td>Mar 2028</td></tr>
-          <tr><td>Tenant B — Light Manufacturing</td><td>12,800</td><td>29.5%</td><td>$6.50</td><td>Aug 2027</td></tr>
-          <tr><td>Tenant C — Distribution</td><td>9,200</td><td>21.2%</td><td>$7.20</td><td>Dec 2029</td></tr>
-          <tr><td>Tenant D — Service Industrial</td><td>6,226</td><td>14.3%</td><td>$6.95</td><td>Jun 2026</td></tr>
+          <tr><td>Agiliti Health (4071–4073)</td><td>16,924</td><td>39.0%</td><td>$6.25</td><td>Feb 2030</td></tr>
+          <tr><td>Rebstock Conveyors (4063–4065)</td><td>11,036</td><td>25.4%</td><td>$6.55</td><td>Jun 2028</td></tr>
+          <tr><td>Image Label Corp (4067–4069)</td><td>8,082</td><td>18.6%</td><td>$7.80</td><td>Apr 2029</td></tr>
+          <tr><td>Hole Products LLC (4061)</td><td>7,384</td><td>17.0%</td><td>$5.75</td><td>Feb 2027</td></tr>
         </tbody>
       </table>
     </div>
     <div class="rollover">
       <div class="rollover-bar">
-        <div class="rollover-seg" style="flex:0.143;background:#C7916B">2026</div>
-        <div class="rollover-seg" style="flex:0.295;background:#A87854">2027</div>
-        <div class="rollover-seg" style="flex:0.350;background:#8E6443">2028</div>
-        <div class="rollover-seg" style="flex:0.212;background:#6E4C34">2029</div>
+        <div class="rollover-seg" style="flex:0.170;background:#C7916B">2027</div>
+        <div class="rollover-seg" style="flex:0.254;background:#A87854">2028</div>
+        <div class="rollover-seg" style="flex:0.186;background:#8E6443">2029</div>
+        <div class="rollover-seg" style="flex:0.390;background:#6E4C34">2030</div>
       </div>
       <div class="rollover-legend">
-        <span><i style="background:#C7916B"></i>2026 Rollover (14.3%)</span>
-        <span><i style="background:#A87854"></i>2027 Rollover (29.5%)</span>
-        <span><i style="background:#8E6443"></i>2028 Rollover (35.0%)</span>
-        <span><i style="background:#6E4C34"></i>2029 Rollover (21.2%)</span>
+        <span><i style="background:#C7916B"></i>2027 Rollover (17.0%)</span>
+        <span><i style="background:#A87854"></i>2028 Rollover (25.4%)</span>
+        <span><i style="background:#8E6443"></i>2029 Rollover (18.6%)</span>
+        <span><i style="background:#6E4C34"></i>2030 Rollover (39.0%)</span>
       </div>
     </div>
   </div>
@@ -692,7 +761,7 @@
     <div class="section-head">
       <span class="section-eyebrow">Financial Performance</span>
       <h2>Projected NOI &amp; Returns</h2>
-      <p>10-year hold underwriting based on UW Model v3. Assumptions reflect mark-to-market lease rollovers, conservative expense growth, and a stabilized exit.</p>
+      <p>10-year hold underwriting sourced from UW Model v3 Monthly (updated 3/30/2026 post-DD). Assumptions reflect mark-to-market lease rollovers, 2.5% expense growth, 3.0% rent growth, and a 7.25% terminal cap exit.</p>
     </div>
     <div class="chart-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:18px">
@@ -706,19 +775,19 @@
     </div>
     <div class="returns-grid">
       <div class="return-tile">
-        <div class="lbl">Projected IRR</div>
+        <div class="lbl">Projected LP IRR</div>
         <div class="val">14.2%</div>
       </div>
       <div class="return-tile">
         <div class="lbl">Equity Multiple</div>
-        <div class="val">2.1x</div>
+        <div class="val">3.32x</div>
       </div>
       <div class="return-tile">
-        <div class="lbl">Avg. Cash Yield</div>
-        <div class="val">8.4%</div>
+        <div class="lbl">Year 1 Cash-on-Cash</div>
+        <div class="val">2.7%</div>
       </div>
       <div class="return-tile">
-        <div class="lbl">Year-1 Cap Rate</div>
+        <div class="lbl">Going-In Cap Rate</div>
         <div class="val">7.56%</div>
       </div>
     </div>
@@ -731,42 +800,96 @@
     <div class="section-head">
       <span class="section-eyebrow">Capital Structure</span>
       <h2>Sources &amp; Uses</h2>
-      <p>Conservatively financed at 65% LTC with a five-year fixed-rate first mortgage. Sponsor co-invests alongside LP capital.</p>
+      <p>Financed at 70% LTV with a five-year fixed-rate first mortgage from Midwest BankCentre. Six months of I/O at the front end boosts Year 1 cash flow; refinanced at Year 5 at the outstanding balance through the remainder of the 10-year hold.</p>
     </div>
     <div class="stack-3">
       <div class="panel">
         <h3>Sources</h3>
         <div class="sub">Total Capitalization</div>
         <ul>
-          <li>Senior Loan (65% LTC)<b>$2,340,000</b></li>
-          <li>LP Equity<b>$1,134,000</b></li>
-          <li>GP Co-Invest<b>$126,000</b></li>
-          <li style="border-top:2px solid var(--ink);padding-top:14px;margin-top:6px"><b>Total Sources</b><b>$3,600,000</b></li>
+          <li>Senior Loan (70% LTV)<b>$2,520,000</b></li>
+          <li>LP Equity<b>$1,239,600</b></li>
+          <li style="border-top:2px solid var(--ink);padding-top:14px;margin-top:6px"><b>Total Sources</b><b>$3,759,600</b></li>
         </ul>
       </div>
       <div class="panel">
         <h3>Uses</h3>
         <div class="sub">Total Project Cost</div>
         <ul>
-          <li>Purchase Price<b>$3,200,000</b></li>
-          <li>Acquisition Closing Costs<b>$112,000</b></li>
-          <li>Capex Reserve<b>$185,000</b></li>
-          <li>Working Capital / Lease-up<b>$103,000</b></li>
-          <li style="border-top:2px solid var(--ink);padding-top:14px;margin-top:6px"><b>Total Uses</b><b>$3,600,000</b></li>
+          <li>Purchase Price<b>$3,600,000</b></li>
+          <li>Acquisition Fee (2%)<b>$72,000</b></li>
+          <li>Closing Costs<b>$75,000</b></li>
+          <li>Financing Fee<b>$12,600</b></li>
+          <li style="border-top:2px solid var(--ink);padding-top:14px;margin-top:6px"><b>Total Uses</b><b>$3,759,600</b></li>
         </ul>
       </div>
       <div class="panel">
         <h3>Debt Assumptions</h3>
-        <div class="sub">Senior Mortgage</div>
+        <div class="sub">Midwest BankCentre Term Sheet</div>
         <ul>
-          <li>Loan Amount<b>$2,340,000</b></li>
-          <li>LTC<b>65.0%</b></li>
+          <li>Loan Amount<b>$2,520,000</b></li>
+          <li>LTV<b>70.0%</b></li>
           <li>Term<b>5 Years Fixed</b></li>
-          <li>Amortization<b>30 Years</b></li>
-          <li>Interest Rate<b>6.85%</b></li>
-          <li>I/O Period<b>None</b></li>
+          <li>Amortization<b>25 Years</b></li>
+          <li>Interest Rate<b>6.15%</b></li>
+          <li>I/O Period<b>6 Months</b></li>
+          <li>Year 1 DSCR<b>1.54x</b></li>
+          <li>Refinance (Year 5)<b>$2,299,592 balance</b></li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== INVESTOR CALCULATOR (light) ============== -->
+<section class="section section-light reveal" id="calculator">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-eyebrow">Investor Illustration</span>
+      <h2>What would your investment look like?</h2>
+      <p>Select an investment size to preview projected LP cash flows, return of capital, and profit over the 10-year hold. Distributions are pro-rata against the $1,239,600 total LP equity raise.</p>
+    </div>
+    <div class="calc-card">
+      <div class="amount-picker" id="amountPicker">
+        <button class="amount-btn active" data-amount="25000">$25K<span class="sub">Investment</span></button>
+        <button class="amount-btn" data-amount="50000">$50K<span class="sub">Investment</span></button>
+        <button class="amount-btn" data-amount="100000">$100K<span class="sub">Investment</span></button>
+        <button class="amount-btn" data-amount="250000">$250K<span class="sub">Investment</span></button>
+      </div>
+      <div class="calc-results">
+        <div class="calc-flows">
+          <h3>Projected LP Cash Flows</h3>
+          <table>
+            <thead>
+              <tr><th>Period</th><th>Operating Dist.</th><th>Sale Proceeds</th><th>Total</th></tr>
+            </thead>
+            <tbody id="calcRows"></tbody>
+          </table>
+        </div>
+        <div class="calc-kpis">
+          <div class="kpi-tile">
+            <div class="lbl">Total Returned</div>
+            <div class="val" id="kpiTotal">—</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="lbl">Total Profit</div>
+            <div class="val" id="kpiProfit">—</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="lbl">Projected LP IRR</div>
+            <div class="val">14.2%</div>
+          </div>
+          <div class="kpi-tile">
+            <div class="lbl">Equity Multiple</div>
+            <div class="val">3.32x</div>
+          </div>
+          <div class="kpi-tile wide">
+            <div class="lbl">Year 10 Sale Proceeds (Return of Capital + Profit Share)</div>
+            <div class="val" id="kpiExit">—</div>
+          </div>
+        </div>
+      </div>
+      <p class="calc-note">Illustrative only. Figures are pro-rated from UW Model v3 Monthly LP distributions on $1,239,600 LP equity: Yr 1 $39,267 · Yr 2 $44,940 · Yr 3 $46,281 · Yr 4 $36,868 · Yr 5 $64,454 · Yr 6 $122,015 · Yr 7 $131,231 · Yr 8 $112,595 · Yr 9 $101,032 · Yr 10 $84,832 operating + $3,328,537 sale. Actual results may differ materially. Preferred return is 0%; LP/GP split is 85/15 after return of capital. Not an offer to sell securities.</p>
     </div>
   </div>
 </section>
@@ -800,7 +923,7 @@
         <div class="tl-card">
           <div class="when">Q1 2026</div>
           <h4>Loan Underwriting</h4>
-          <p>Senior debt sized at 65% LTC with regional bank lender. Rate locked at 6.85% on a 5-year fixed term.</p>
+          <p>Senior debt sized at 70% LTV with Midwest BankCentre. Rate locked at 6.15% on a 5-year fixed term with 6 months of I/O.</p>
         </div>
         <div class="spacer"></div>
       </div>
@@ -809,7 +932,7 @@
         <div class="tl-card">
           <div class="when">Q2 2026</div>
           <h4>Equity Raise &amp; Closing</h4>
-          <p>$1.26M equity raise from accredited investors and family offices. Targeting close on or before June 30, 2026.</p>
+          <p>$1.24M equity raise from accredited investors and family offices. Targeting close on or before June 30, 2026.</p>
         </div>
       </div>
       <div class="tl-item">
@@ -823,9 +946,9 @@
       <div class="tl-item">
         <div class="spacer"></div>
         <div class="tl-card">
-          <div class="when">2027–2035</div>
+          <div class="when">2027–2036</div>
           <h4>Hold &amp; Exit</h4>
-          <p>Quarterly investor reporting throughout the 10-year hold. Stabilized exit at projected 8.50% terminal cap with 14.2% IRR.</p>
+          <p>Quarterly investor reporting throughout the 10-year hold, with a mid-hold refinance at Year 5. Targeted exit at a 7.25% terminal cap — projected 14.2% LP IRR and 3.32x equity multiple.</p>
         </div>
       </div>
     </div>
@@ -1041,6 +1164,7 @@ document.addEventListener('keydown', e => {
 /* -------- NOI Chart -------- */
 const ctx = document.getElementById('noiChart').getContext('2d');
 const noi = [272231, 296648, 303339, 300443, 330152, 371926, 383084, 388788, 358763, 324630];
+const noiLabels = ['Yr 1','Yr 2','Yr 3','Yr 4','Yr 5','Yr 6','Yr 7','Yr 8','Yr 9','Yr 10'];
 const grad = ctx.createLinearGradient(0, 0, 0, 380);
 grad.addColorStop(0, '#C7916B');
 grad.addColorStop(1, 'rgba(199,145,107,.55)');
@@ -1048,13 +1172,13 @@ grad.addColorStop(1, 'rgba(199,145,107,.55)');
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: noi.map((_,i)=>`Yr ${i+1}`),
+    labels: noiLabels,
     datasets: [{
       data: noi,
       backgroundColor: grad,
       borderRadius: 6,
       borderSkipped: false,
-      maxBarThickness: 56,
+      maxBarThickness: 72,
     }]
   },
   options: {
@@ -1090,6 +1214,48 @@ new Chart(ctx, {
     }
   }
 });
+
+/* -------- Investor Calculator --------
+   Source: UW Model v3 Monthly, Waterfall tab. Per-dollar LP distributions on $1,239,600 LP equity.
+   Year 10 total = operating Y10 ($84,831.59) + sale proceeds ($3,328,536.76).
+*/
+const LP_EQUITY = 1239600;
+const LP_OP = [39267.26, 44939.75, 46280.70, 36867.59, 64454.17, 122014.89, 131231.08, 112594.83, 101032.25, 84831.59];  // Operating distributions Y1-Y10
+const LP_SALE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 3328536.76];                                                                   // Sale proceeds Y10
+
+const fmt = n => '$' + Math.round(n).toLocaleString();
+
+function renderCalc(amount){
+  const mult = amount / LP_EQUITY;
+  const rows = [];
+  let totalOp = 0, totalSale = 0;
+  for (let i = 0; i < 10; i++){
+    const op = LP_OP[i] * mult;
+    const sale = LP_SALE[i] * mult;
+    totalOp += op; totalSale += sale;
+    rows.push(
+      `<tr><td>Year ${i+1}</td><td>${op > 0 ? fmt(op) : '—'}</td><td>${sale > 0 ? fmt(sale) : '—'}</td><td><b>${(op+sale) > 0 ? fmt(op+sale) : '—'}</b></td></tr>`
+    );
+  }
+  const total = totalOp + totalSale;
+  const profit = total - amount;
+  rows.push(
+    `<tr class="total"><td>Total</td><td>${fmt(totalOp)}</td><td>${fmt(totalSale)}</td><td>${fmt(total)}</td></tr>`
+  );
+  document.getElementById('calcRows').innerHTML = rows.join('');
+  document.getElementById('kpiTotal').textContent = fmt(total);
+  document.getElementById('kpiProfit').textContent = fmt(profit);
+  document.getElementById('kpiExit').textContent = fmt(totalSale);
+}
+
+document.querySelectorAll('.amount-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCalc(parseInt(btn.dataset.amount, 10));
+  });
+});
+renderCalc(25000);
 </script>
 </body>
 </html>
