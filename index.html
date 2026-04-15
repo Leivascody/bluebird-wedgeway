@@ -1615,9 +1615,9 @@
     'WEDGEWAY-2026',   // default code for initial distribution — rotate as needed
     'BLUEBIRD-IR-2026' // backup code
   ];
-  // Formspree endpoint — lead capture (name/email/code emailed to cleivas@bluebirdcre.co on every successful access).
-  // Sign up at https://formspree.io with cleivas@bluebirdcre.co, create a new form, paste the endpoint URL here.
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_ENDPOINT';
+  // Google Apps Script Web App endpoint — lead capture (appends a row to Cody's Google Sheet on every successful access).
+  // See gate setup instructions for how to deploy the Apps Script and get this URL.
+  const LEAD_CAPTURE_ENDPOINT = 'https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec';
   const STORAGE_KEY = 'bb_wedgeway_access';
   const gate = document.getElementById('accessGate');
   const form = document.getElementById('gateForm');
@@ -1708,22 +1708,21 @@
     }
 
     // If endpoint isn't configured yet, skip the POST and just unlock (dev mode).
-    if (FORMSPREE_ENDPOINT.indexOf('REPLACE_WITH_YOUR_ENDPOINT') !== -1) {
-      console.warn('Gate: Formspree endpoint not configured — lead capture disabled.');
+    if (LEAD_CAPTURE_ENDPOINT.indexOf('REPLACE_WITH_YOUR_DEPLOYMENT_ID') !== -1) {
+      console.warn('Gate: lead capture endpoint not configured — row will NOT be logged to Sheet.');
       unlock();
       return;
     }
 
-    fetch(FORMSPREE_ENDPOINT, {
+    // Google Apps Script web apps require mode:'no-cors' + text/plain body (no preflight).
+    // We can't read the response with no-cors, so we unlock regardless.
+    fetch(LEAD_CAPTURE_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
-    .then(function(r){
-      // Unlock on success. If Formspree errors, still unlock (valid code) but log.
-      if (!r.ok) console.warn('Gate: lead capture POST returned', r.status);
-      unlock();
-    })
+    .then(function(){ unlock(); })
     .catch(function(e){
       console.warn('Gate: lead capture POST failed', e);
       unlock();
