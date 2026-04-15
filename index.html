@@ -553,7 +553,7 @@
     display:block;font-size:11px;font-weight:600;letter-spacing:.18em;
     text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:8px;
   }
-  .gate-field input[type="text"]{
+  .gate-field input[type="text"],.gate-field input[type="email"]{
     width:100%;box-sizing:border-box;
     background:rgba(255,255,255,.04);
     border:1px solid rgba(255,255,255,.16);
@@ -561,7 +561,7 @@
     padding:14px 16px;border-radius:10px;letter-spacing:.04em;
     transition:border-color .2s, background .2s;
   }
-  .gate-field input[type="text"]:focus{
+  .gate-field input[type="text"]:focus,.gate-field input[type="email"]:focus{
     outline:none;border-color:var(--gold);
     background:rgba(255,255,255,.07);
   }
@@ -825,12 +825,20 @@
     <img class="logo" src="images/bluebird-logo.png" alt="Bluebird Commercial Real Estate" />
     <span class="gate-eyebrow">Confidential &middot; Rule 506(b) Private Placement</span>
     <h2 id="gateTitle">Investor access required</h2>
-    <p class="lede">This investment material is confidential and provided only to pre-existing accredited investors who have received a direct invitation from Bluebird. Please enter your invitation code and confirm the statements below to continue.</p>
+    <p class="lede">This investment material is confidential and provided only to pre-existing accredited investors who have received a direct invitation from Bluebird. Please identify yourself, enter your invitation code, and confirm the statements below to continue.</p>
 
     <form id="gateForm" novalidate>
       <div class="gate-field">
+        <label for="gateName">Full Name</label>
+        <input type="text" id="gateName" autocomplete="name" spellcheck="false" placeholder="Jane Investor" required />
+      </div>
+      <div class="gate-field">
+        <label for="gateEmail">Email Address</label>
+        <input type="email" id="gateEmail" autocomplete="email" spellcheck="false" placeholder="jane@example.com" required />
+      </div>
+      <div class="gate-field">
         <label for="gateCode">Invitation Code</label>
-        <input type="text" id="gateCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter code from your invitation email" />
+        <input type="text" id="gateCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Enter code from your invitation email" required />
       </div>
 
       <label class="gate-check">
@@ -1607,15 +1615,22 @@
     'WEDGEWAY-2026',   // default code for initial distribution — rotate as needed
     'BLUEBIRD-IR-2026' // backup code
   ];
+  // Formspree endpoint — lead capture (name/email/code emailed to cleivas@bluebirdcre.co on every successful access).
+  // Sign up at https://formspree.io with cleivas@bluebirdcre.co, create a new form, paste the endpoint URL here.
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_WITH_YOUR_ENDPOINT';
   const STORAGE_KEY = 'bb_wedgeway_access';
   const gate = document.getElementById('accessGate');
   const form = document.getElementById('gateForm');
+  const nameI = document.getElementById('gateName');
+  const emailI = document.getElementById('gateEmail');
   const code = document.getElementById('gateCode');
   const c1 = document.getElementById('gateCheck1');
   const c2 = document.getElementById('gateCheck2');
   const c3 = document.getElementById('gateCheck3');
   const err = document.getElementById('gateError');
   const submit = document.getElementById('gateSubmit');
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   // Already authorized this session?
   try {
@@ -1626,38 +1641,97 @@
   } catch(e) {}
 
   function refreshSubmit(){
-    const ok = code.value.trim().length > 0 && c1.checked && c2.checked && c3.checked;
+    const nameOk = nameI.value.trim().length >= 2;
+    const emailOk = EMAIL_RE.test(emailI.value.trim());
+    const codeOk = code.value.trim().length > 0;
+    const ok = nameOk && emailOk && codeOk && c1.checked && c2.checked && c3.checked;
     submit.disabled = !ok;
   }
   function dismissGate(){
     document.documentElement.classList.remove('gated');
     if (gate) gate.style.display = 'none';
   }
-  [code, c1, c2, c3].forEach(el => {
+  [nameI, emailI, code, c1, c2, c3].forEach(el => {
     el.addEventListener('input', refreshSubmit);
     el.addEventListener('change', refreshSubmit);
   });
 
+  function setError(msg){
+    err.textContent = msg;
+    err.classList.add('show');
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    err.classList.remove('show');
+
+    const enteredName = nameI.value.trim();
+    const enteredEmail = emailI.value.trim();
     const entered = code.value.trim().toUpperCase().replace(/\s+/g,'');
+
+    // Re-validate (belt & suspenders — button is already disabled until valid)
+    if (enteredName.length < 2) { setError('Please enter your full name to continue.'); nameI.focus(); return; }
+    if (!EMAIL_RE.test(enteredEmail)) { setError('Please enter a valid email address to continue.'); emailI.focus(); return; }
+
     const match = WEDGEWAY_CODES.some(c => c.toUpperCase() === entered);
     if (!match) {
-      err.classList.add('show');
+      setError('The invitation code you entered is not recognized. Please check the code provided in your invitation email, or contact Bluebird to request access.');
       code.focus();
       return;
     }
-    err.classList.remove('show');
-    try {
-      sessionStorage.setItem(STORAGE_KEY, 'granted');
-      sessionStorage.setItem(STORAGE_KEY + '_at', new Date().toISOString());
-      sessionStorage.setItem(STORAGE_KEY + '_code', entered);
-    } catch(e) {}
-    dismissGate();
+
+    // Disable the button during POST so it can't be double-submitted.
+    const originalLabel = submit.textContent;
+    submit.disabled = true;
+    submit.textContent = 'Verifying…';
+
+    const payload = {
+      name: enteredName,
+      email: enteredEmail,
+      code: entered,
+      timestamp: new Date().toISOString(),
+      user_agent: navigator.userAgent,
+      page: 'Wedgeway Court 506(b) Investor Package',
+      referrer: document.referrer || '(direct)',
+      _subject: 'Wedgeway access: ' + enteredName + ' (' + enteredEmail + ')'
+    };
+
+    function unlock(){
+      try {
+        sessionStorage.setItem(STORAGE_KEY, 'granted');
+        sessionStorage.setItem(STORAGE_KEY + '_at', new Date().toISOString());
+        sessionStorage.setItem(STORAGE_KEY + '_code', entered);
+        sessionStorage.setItem(STORAGE_KEY + '_name', enteredName);
+        sessionStorage.setItem(STORAGE_KEY + '_email', enteredEmail);
+      } catch(e) {}
+      dismissGate();
+    }
+
+    // If endpoint isn't configured yet, skip the POST and just unlock (dev mode).
+    if (FORMSPREE_ENDPOINT.indexOf('REPLACE_WITH_YOUR_ENDPOINT') !== -1) {
+      console.warn('Gate: Formspree endpoint not configured — lead capture disabled.');
+      unlock();
+      return;
+    }
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r){
+      // Unlock on success. If Formspree errors, still unlock (valid code) but log.
+      if (!r.ok) console.warn('Gate: lead capture POST returned', r.status);
+      unlock();
+    })
+    .catch(function(e){
+      console.warn('Gate: lead capture POST failed', e);
+      unlock();
+    });
   });
 
-  // Focus the code input on load
-  if (code) setTimeout(() => code.focus(), 100);
+  // Focus the name input on load
+  if (nameI) setTimeout(() => nameI.focus(), 100);
 })();
 
 /* -------- Nav scroll shadow -------- */
