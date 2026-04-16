@@ -790,6 +790,10 @@
     .returns-grid{grid-template-columns:repeat(2,1fr)}
     .calc-results{grid-template-columns:1fr}
     .amount-picker{grid-template-columns:repeat(2,1fr)}
+    .deal-snapshot{grid-template-columns:repeat(3,1fr);gap:12px}
+    .submarket-grid{grid-template-columns:repeat(2,1fr)}
+    .capex-grid{grid-template-columns:1fr}
+    .tenant-credit-grid{grid-template-columns:1fr}
   }
   @media (max-width:740px){
     .nav-links,.nav-cta .login{display:none}
@@ -815,6 +819,93 @@
   /* Reveal animation */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s ease}
   .reveal.in{opacity:1;transform:none}
+
+  /* Staggered child reveals */
+  .reveal-child{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal-child.in{opacity:1;transform:none}
+
+  /* Sensitivity table row hover */
+  .sensitivity-table tbody tr{transition:background .2s ease}
+  .sensitivity-table tbody tr:hover{background:rgba(199,145,107,.08)}
+  .sensitivity-table tbody tr:hover td{color:var(--navy)}
+
+  /* Data-table row hover */
+  .data-table tbody tr{transition:background .2s ease}
+  .data-table tbody tr:hover{background:rgba(199,145,107,.06)}
+
+  /* Card lift micro-interaction */
+  .tc-card{transition:transform .25s ease, box-shadow .25s ease, border-color .25s}
+  .tc-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:var(--gold-line)}
+
+  /* Return tile hover */
+  .return-tile{transition:transform .2s ease, box-shadow .2s ease, border-color .2s}
+  .return-tile:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.12);border-color:var(--gold-line)}
+
+  /* SM tile hover */
+  .sm-tile{transition:transform .2s ease, border-color .2s}
+  .sm-tile:hover{transform:translateY(-2px);border-color:rgba(199,145,107,.4)}
+
+  /* Hero stat number animated count */
+  .hero-stat-num{transition:color .3s}
+
+  /* Amount button active glow */
+  .amount-btn{transition:transform .15s ease, box-shadow .15s ease, background .2s, border-color .2s}
+  .amount-btn:hover:not(.active){transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+
+  /* KPI tile pulse on update */
+  @keyframes kpiPulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.03)}
+    100%{transform:scale(1)}
+  }
+  .kpi-tile.pulse .val{animation:kpiPulse .35s ease}
+
+  /* NOI chart fade-in */
+  @keyframes chartFadeIn{
+    from{opacity:0;transform:translateY(12px)}
+    to{opacity:1;transform:none}
+  }
+  .noi-chart-wrap.visible{animation:chartFadeIn .8s ease forwards}
+
+  /* ---- Additional mobile breakpoints ---- */
+  @media (max-width:540px){
+    .hero h1{font-size:clamp(32px,8vw,44px)}
+    .hero p.lead{font-size:15px}
+    .hero-ctas{gap:12px}
+    .hero-ctas .btn-rounded{width:100%;justify-content:center}
+    .hero-stats{grid-template-columns:1fr 1fr;gap:20px}
+    .hero-stat-num{font-size:28px}
+    .deal-snapshot{grid-template-columns:repeat(2,1fr);gap:10px;padding:20px}
+    .deal-snapshot .tile{border-right:0;border-bottom:1px solid var(--line-dark);padding-bottom:14px}
+    .deal-snapshot .tile:nth-last-child(-n+2){border-bottom:0}
+    .deal-snapshot .tile .val{font-size:20px}
+    .tenant-credit-grid{grid-template-columns:1fr}
+    .submarket-grid{grid-template-columns:1fr 1fr}
+    .capex-grid{grid-template-columns:1fr}
+    .capex-list li{grid-template-columns:1fr;gap:6px}
+    .capex-list .when{padding-top:0}
+    .capex-list .amt{text-align:left}
+    .fees-grid{grid-template-columns:1fr}
+    .fees-grid .row:nth-child(2){border-top:1px solid rgba(255,255,255,.1)}
+    .sensitivity-table th,.sensitivity-table td{padding:10px 6px;font-size:12px}
+    .sensitivity-wrap{padding:20px}
+    .calc-card{padding:20px}
+    .amount-picker{grid-template-columns:1fr 1fr}
+    .returns-grid{grid-template-columns:1fr 1fr}
+    .kpi-tile .val{font-size:22px}
+    .compare thead th,.compare tbody td{padding:10px 12px;font-size:12px}
+    .section{padding:64px 0}
+    .section-head{margin-bottom:44px}
+    .section-head h2{font-size:clamp(24px,6vw,30px)}
+    .section-head p{font-size:15px}
+  }
+  @media (max-width:380px){
+    .hero-stats{grid-template-columns:1fr;gap:16px}
+    .deal-snapshot{grid-template-columns:1fr}
+    .submarket-grid{grid-template-columns:1fr}
+    .amount-picker{grid-template-columns:1fr}
+    .returns-grid{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -1252,7 +1343,7 @@
         </div>
         <div style="font-size:11px;color:var(--ink-soft);letter-spacing:.18em;text-transform:uppercase;font-weight:600">USD per year</div>
       </div>
-      <div class="chart-wrap"><canvas id="noiChart"></canvas></div>
+      <div class="chart-wrap noi-chart-wrap"><canvas id="noiChart"></canvas></div>
     </div>
     <div class="returns-grid">
       <div class="return-tile">
@@ -1819,6 +1910,96 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+/* -------- Staggered child reveals -------- */
+const childIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const parent = entry.target;
+    const children = parent.querySelectorAll('.reveal-child');
+    children.forEach((ch, i) => {
+      setTimeout(() => ch.classList.add('in'), i * 120);
+    });
+    childIO.unobserve(parent);
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.cards-4, .returns-grid, .submarket-grid, .hero-stats, .stack-3, .tenant-credit-grid, .amount-picker, .fees-grid, .timeline').forEach(el => {
+  // Tag direct children for stagger
+  Array.from(el.children).forEach(ch => ch.classList.add('reveal-child'));
+  childIO.observe(el);
+});
+
+/* -------- Animated counter for hero stats -------- */
+function animateValue(el, end, duration, suffix) {
+  const isFloat = String(end).includes('.');
+  const start = 0;
+  const range = end - start;
+  const startTime = performance.now();
+  function tick(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // ease-out cubic
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = start + range * ease;
+    if (isFloat) {
+      el.textContent = current.toFixed(1) + suffix;
+    } else {
+      el.textContent = Math.round(current).toLocaleString() + suffix;
+    }
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const heroIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const nums = e.target.querySelectorAll('.hero-stat-num');
+    nums.forEach(n => {
+      const raw = n.textContent.trim();
+      // Parse: "43,426" → 43426, "14.2%" → 14.2, "10 yr" → 10, "2.80x" → 2.80
+      if (raw.includes(',')) {
+        const val = parseInt(raw.replace(/,/g, ''), 10);
+        animateValue(n, val, 1400, '');
+        // restore comma formatting after
+        setTimeout(() => { n.textContent = raw; }, 1500);
+      } else if (raw.includes('%')) {
+        const val = parseFloat(raw);
+        animateValue(n, val, 1200, '%');
+      } else if (raw.includes('yr')) {
+        const val = parseInt(raw, 10);
+        animateValue(n, val, 800, ' yr');
+      } else if (raw.includes('x')) {
+        const val = parseFloat(raw);
+        const dur = 1200;
+        const startTime = performance.now();
+        (function tick(now) {
+          const p = Math.min((now - startTime) / dur, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          n.textContent = (val * ease).toFixed(2) + 'x';
+          if (p < 1) requestAnimationFrame(tick);
+        })(performance.now());
+      }
+    });
+    heroIO.unobserve(e.target);
+  });
+}, { threshold: 0.3 });
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) heroIO.observe(heroStats);
+
+/* -------- NOI chart entrance animation -------- */
+const chartWrap = document.querySelector('.noi-chart-wrap');
+if (chartWrap) {
+  const chartIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        chartIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  chartIO.observe(chartWrap);
+}
+
 /* -------- Gallery -------- */
 const aerialPhotos = [
   'DJI_0550','DJI_0551','DJI_0552','DJI_0553','DJI_0554','DJI_0555','DJI_0556',
@@ -1998,6 +2179,12 @@ document.querySelectorAll('.amount-btn').forEach(btn => {
     document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderCalc(parseInt(btn.dataset.amount, 10));
+    // Pulse KPI tiles on selection change
+    document.querySelectorAll('.kpi-tile').forEach(t => {
+      t.classList.remove('pulse');
+      void t.offsetWidth; // reflow
+      t.classList.add('pulse');
+    });
   });
 });
 renderCalc(25000);
