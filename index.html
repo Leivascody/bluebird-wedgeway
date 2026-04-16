@@ -224,8 +224,8 @@
   .card p{color:var(--ink-soft);font-size:15px;line-height:1.65;margin:0}
 
   /* ---------------- PROPERTY OVERVIEW SPLIT ---------------- */
-  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:80px;align-items:center}
-  .split-gallery{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:14px}
+  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:80px;align-items:start}
+  .split-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .split-gallery .hero-photo{grid-column:1 / -1;position:relative}
   .split-gallery .sub-photo{position:relative}
   .split-gallery img{
@@ -236,6 +236,8 @@
   }
   .split-gallery .hero-photo img{aspect-ratio:16/9}
   .split-gallery .sub-photo img{aspect-ratio:4/3;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+  .split-gallery .sub-photo.wide{grid-column:1 / -1}
+  .split-gallery .sub-photo.wide img{aspect-ratio:16/9}
   .split-gallery a:hover img,.split-gallery .hero-photo:hover img,.split-gallery .sub-photo:hover img{
     transform:translateY(-3px);
     box-shadow:0 36px 90px rgba(0,0,0,.5);
@@ -246,6 +248,13 @@
     padding:14px 22px;border-radius:12px;
     font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
     border-left:3px solid var(--gold);
+  }
+  .split-gallery .photo-caption{
+    position:absolute;left:18px;bottom:16px;
+    background:rgba(13,27,43,.82);color:#fff;
+    padding:8px 14px;border-radius:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+    backdrop-filter:blur(6px);
   }
   /* legacy class, preserved for safety */
   .split-img{position:relative}
@@ -896,6 +905,7 @@
   @media (max-width:540px){
     .split-gallery{gap:10px}
     .split-gallery .badge{left:14px;bottom:14px;padding:10px 14px;font-size:11px}
+    .split-gallery .photo-caption{left:10px;bottom:10px;padding:6px 10px;font-size:10px;letter-spacing:.1em}
     .hero h1{font-size:clamp(32px,8vw,44px)}
     .hero p.lead{font-size:15px}
     .hero-ctas{gap:12px}
@@ -1122,10 +1132,24 @@
           <div class="badge">Earth City, MO</div>
         </div>
         <div class="sub-photo">
-          <img src="images/dji_fly_20260223_094910_851_1771861944556_photo.jpg" alt="Dock-high loading area with water frontage" />
+          <img src="images/DJI_0565.jpg" alt="Aerial view of 4061 Wedgeway Court within Earth City industrial park" />
+          <div class="photo-caption">Industrial Park Context</div>
+        </div>
+        <div class="sub-photo">
+          <img src="images/dji_fly_20260223_094850_850_1771861945805_photo.jpg" alt="Dock-high loading in use with adjacent water feature" />
+          <div class="photo-caption">Dock-High Loading</div>
+        </div>
+        <div class="sub-photo wide">
+          <img src="images/dji_fly_20260223_094910_851_1771861944556_photo.jpg" alt="Building frontage reflected in adjacent pond" />
+          <div class="photo-caption">Water Frontage</div>
+        </div>
+        <div class="sub-photo">
+          <img src="images/DJI_0555.jpg" alt="Close aerial view of loading side and parking" />
+          <div class="photo-caption">Rear Loading Side</div>
         </div>
         <div class="sub-photo">
           <img src="images/dji_fly_20260223_094510_843_1771861955863_photo.jpg" alt="Tenant frontage and parking at 4061 Wedgeway Court" />
+          <div class="photo-caption">Tenant Frontage</div>
         </div>
       </div>
       <div>
